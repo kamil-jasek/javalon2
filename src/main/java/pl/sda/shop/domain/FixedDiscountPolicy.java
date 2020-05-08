@@ -1,6 +1,10 @@
 package pl.sda.shop.domain;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * ... comment class...
@@ -8,10 +12,13 @@ import java.math.BigDecimal;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public final class FixedDiscountPolicy implements DiscountPolicy {
+final class FixedDiscountPolicy implements DiscountPolicy {
 
     // 0.2 = 20%
-    private final float discount;
+    private float discount;
+
+    // for jpa
+    private FixedDiscountPolicy() {}
 
     public FixedDiscountPolicy(float discount) {
         if (discount <= 0 || discount >= 1) {

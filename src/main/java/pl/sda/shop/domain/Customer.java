@@ -1,8 +1,9 @@
 package pl.sda.shop.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.*;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -11,17 +12,37 @@ import static java.util.Objects.requireNonNull;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public abstract class Customer {
+@Entity
+@Table(name = "customers")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "customer_type", discriminatorType = DiscriminatorType.STRING)
+abstract class Customer {
 
-    private final String name;
-    private final String taxId;
-    private final List<Address> addresses;
+    @Id
+    private UUID id;
 
-    protected Customer(String name, String taxId) {
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String taxId;
+
+    @OneToMany
+    private List<Address> addresses = emptyList();
+
+    // for jpa
+    protected Customer() {}
+
+    Customer(String name, String taxId) {
         requireNonNull(name, taxId);
+        this.id = UUID.randomUUID();
         this.name = name;
         this.taxId = taxId;
         this.addresses = new ArrayList<>();
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -47,5 +68,20 @@ public abstract class Customer {
             return addresses.remove(idx);
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return id.equals(customer.id) &&
+                name.equals(customer.name) &&
+                taxId.equals(customer.taxId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, taxId);
     }
 }

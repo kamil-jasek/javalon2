@@ -2,15 +2,22 @@ package pl.sda.shop.domain;
 
 import pl.sda.shop.util.PreconditionUtil;
 
+import javax.persistence.Embeddable;
+import java.util.Objects;
+
 /**
  * ... comment class...
  *
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public final class VatNumber {
+@Embeddable
+final class VatNumber {
 
-    private final String value;
+    private String value;
+
+    // for jpa
+    private VatNumber() {}
 
     public VatNumber(String value) {
         PreconditionUtil.requireNonNull(value);
@@ -24,5 +31,18 @@ public final class VatNumber {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VatNumber vatNumber = (VatNumber) o;
+        return value.equals(vatNumber.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

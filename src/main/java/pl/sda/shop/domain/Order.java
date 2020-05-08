@@ -1,9 +1,12 @@
 package pl.sda.shop.domain;
 
-import pl.sda.shop.util.PreconditionUtil;
-
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
 
@@ -13,21 +16,40 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public final class Order {
+@Entity
+@Table(name = "customer_orders")
+final class Order {
 
-    private final List<Item> items;
-    private final DiscountPolicy discountPolicy;
+    @Id
+    private UUID id;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Item> items;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public Order(List<Item> items, DiscountPolicy discountPolicy) {
-        requireNonNull(items, discountPolicy);
+    @OneToOne(cascade = CascadeType.ALL)
+    private OrderDiscount discount;
+
+    // for jpa
+    private Order() {
+    }
+
+    public Order(List<Item> items) {
+        requireNonNull(items);
+        this.id = UUID.randomUUID();
         this.items = items;
-        this.discountPolicy = discountPolicy;
         this.status = OrderStatus.IN_PROGRESS;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public List<Item> getItems() {
-        return items;
+        return new ArrayList<>(items);
     }
 
     public BigDecimal getTotalPrice() {
@@ -36,10 +58,34 @@ public final class Order {
             // result = result + (price * quantity)
             result = result.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
         }
-        return result.subtract(discountPolicy.calculate(this));
+        BigDecimal discountPercent = getDiscountPercent();
+        // result - (result * discount)
+        return result.subtract(result.multiply(discountPercent)).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public void applyDiscount(OrderDiscount discount) {
+        requireNonNull(discount);
+        this.discount = discount;
+    }
+
+    private BigDecimal getDiscountPercent() {
+        return discount != null ? BigDecimal.valueOf(discount.getValue()) : BigDecimal.ZERO;
     }
 
     public OrderStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id.equals(order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

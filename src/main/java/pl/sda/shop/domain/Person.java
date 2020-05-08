@@ -1,5 +1,9 @@
 package pl.sda.shop.domain;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
 
 /**
@@ -8,10 +12,15 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public final class Person extends Customer {
+@Entity
+@DiscriminatorValue("person")
+final class Person extends Customer {
 
-    private final String firstName;
-    private final String lastName;
+    private String firstName;
+    private String lastName;
+
+    // for jpa
+    private Person() {}
 
     public Person(String firstName, String lastName, String taxId) {
         super(firstName + " " + lastName, taxId);

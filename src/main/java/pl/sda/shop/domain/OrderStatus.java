@@ -6,6 +6,6 @@ package pl.sda.shop.domain;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public enum OrderStatus {
+enum OrderStatus {
     IN_PROGRESS, CANCELED, SENT
 }

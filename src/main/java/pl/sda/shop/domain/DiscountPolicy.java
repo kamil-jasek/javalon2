@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public interface DiscountPolicy {
+interface DiscountPolicy {
 
     BigDecimal calculate(Order order);
 }

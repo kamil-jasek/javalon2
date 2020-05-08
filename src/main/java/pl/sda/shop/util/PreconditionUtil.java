@@ -15,4 +15,10 @@ public final class PreconditionUtil {
             Objects.requireNonNull(obj);
         }
     }
+
+    public static void checkArgument(boolean valid, String message) {
+        if (!valid) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

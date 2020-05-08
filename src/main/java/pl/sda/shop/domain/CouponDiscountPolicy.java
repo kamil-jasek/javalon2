@@ -1,9 +1,6 @@
 package pl.sda.shop.domain;
 
-import pl.sda.shop.util.PreconditionUtil;
-
 import java.math.BigDecimal;
-import java.util.List;
 
 import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
 
@@ -13,34 +10,35 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public final class CouponDiscountPolicy implements DiscountPolicy {
+final class CouponDiscountPolicy implements DiscountPolicy {
 
-    private final List<String> coupons;
-    private final String coupon;
-    private final float discount;
+    private final CouponRepository repository;
+    private final String discountCode;
 
-    public CouponDiscountPolicy(List<String> coupons, String coupon, float discount) {
-        requireNonNull(coupons, coupon);
-        this.coupons = coupons;
-        this.coupon = coupon;
-        this.discount = discount;
+    public CouponDiscountPolicy(CouponRepository repository, String discountCode) {
+        requireNonNull(discountCode);
+        this.repository = repository;
+        this.discountCode = discountCode;
     }
 
     @Override
     public BigDecimal calculate(Order order) {
-        if (coupons.contains(coupon)) {
-             return getDiscount(order);
-        }
-        return BigDecimal.ZERO;
+        return repository.find(discountCode)
+                .map(coupon -> getDiscount(order, coupon))
+                .orElse(BigDecimal.ZERO);
     }
 
-    private BigDecimal getDiscount(Order order) {
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    private BigDecimal getDiscount(Order order, Coupon coupon) {
         BigDecimal result = BigDecimal.ZERO;
         for (Item item : order.getItems()) {
             // result = result + (price * quantity)
             result = result.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
         }
         // total price * discount = 100 * 0.2 = 20
-        return result.multiply(BigDecimal.valueOf(discount));
+        return result.multiply(BigDecimal.valueOf(coupon.getDiscount()));
     }
 }

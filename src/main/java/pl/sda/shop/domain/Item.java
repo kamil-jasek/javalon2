@@ -1,7 +1,12 @@
 package pl.sda.shop.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
 
@@ -11,15 +16,29 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
-public final class Item {
+@Entity
+@Table(name = "order_items")
+final class Item {
 
-    private final String name;
-    private final BigDecimal price;
-    private final int quantity;
+    @Id
+    private UUID id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    private int quantity;
+
+    // for jpa
+    private Item() {}
 
     public Item(String name, BigDecimal price, int quantity) {
         requireNonNull(name, price);
         validatePrice(price);
+        this.id = UUID.randomUUID();
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -30,6 +49,10 @@ public final class Item {
         if (comparison <= 0) {
             throw new IllegalArgumentException("Price is invalid. Should be above 0.");
         }
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {

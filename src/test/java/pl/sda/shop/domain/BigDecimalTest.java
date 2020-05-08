@@ -1,4 +1,4 @@
-package pl.sda.shop;
+package pl.sda.shop.domain;
 
 import org.junit.jupiter.api.Test;
 
