@@ -1,6 +1,10 @@
 package pl.sda.shop.domain;
 
 import pl.sda.shop.util.PreconditionUtil;
+import pl.sda.shop.util.annotation.JpaOnly;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  * ... comment class...
@@ -8,9 +12,14 @@ import pl.sda.shop.util.PreconditionUtil;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
+@Embeddable
 public final class VatNumber {
 
-    private final String value;
+    @Column(name = "vat_number")
+    private String value;
+
+    @JpaOnly
+    private VatNumber() {}
 
     public VatNumber(String value) {
         PreconditionUtil.requireNonNull(value);

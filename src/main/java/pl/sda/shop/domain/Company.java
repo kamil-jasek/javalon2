@@ -1,6 +1,10 @@
 package pl.sda.shop.domain;
 
-import pl.sda.shop.util.PreconditionUtil;
+import pl.sda.shop.util.annotation.JpaOnly;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 
 /**
  * ... comment class...
@@ -8,9 +12,16 @@ import pl.sda.shop.util.PreconditionUtil;
  * @author kamil.jasek@gmail.com
  * @since 2020-04-26
  */
+@Entity
+@DiscriminatorValue("company")
 public final class Company extends Customer {
 
-    private final VatNumber vatNumber;
+    @Embedded
+    private VatNumber vatNumber;
+
+    @JpaOnly
+    private Company() {
+    }
 
     public Company(String name, VatNumber vatNumber) {
         super(name, vatNumber.getValue());
