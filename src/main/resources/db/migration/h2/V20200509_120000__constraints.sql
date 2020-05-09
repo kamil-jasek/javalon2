@@ -1,0 +1,11 @@
+alter table accounts_orders add constraint UK_mvltlri9yb1j799169bu2i4el unique (orders_id);
+alter table customer_orders_items add constraint UK_togte7715n4nnhtgsk1lkocm7 unique (items_id);
+alter table customers_addresses add constraint UK_9jc324obdu44atlhb0iifw47u unique (addresses_id);
+alter table accounts add constraint FKn6x8pdp50os8bq5rbb792upse foreign key (customer_id) references customers;
+alter table accounts_orders add constraint FKtph1hc0gmtlftj223b5rg2dik foreign key (orders_id) references customer_orders;
+alter table accounts_orders add constraint FKbi22l84l14sd4irmj7kiu99bn foreign key (account_id) references accounts;
+alter table customer_orders add constraint FKcwww8q2orysevukv65yu7krrk foreign key (discount_id) references order_discount;
+alter table customer_orders_items add constraint FKqk1krya2yqm78se7d2ovldlb6 foreign key (items_id) references order_items;
+alter table customer_orders_items add constraint FK2nsbkwnsr5ssgkvycifa59e98 foreign key (order_id) references customer_orders;
+alter table customers_addresses add constraint FKr08vqw1090ujf8lg64q046ju2 foreign key (addresses_id) references addresses;
+alter table customers_addresses add constraint FKpsc9hohm5l7tcwi8yjho5ef9o foreign key (customer_id) references customers;
