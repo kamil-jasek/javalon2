@@ -1,4 +1,4 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
@@ -19,7 +19,7 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  */
 @Entity
 @Table(name = "order_items")
-public final class Item {
+final class Item {
 
     @Id
     private UUID id;

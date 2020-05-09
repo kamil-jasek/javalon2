@@ -1,4 +1,4 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
 import pl.sda.shop.util.PreconditionUtil;
 import pl.sda.shop.util.annotation.JpaOnly;
@@ -13,7 +13,7 @@ import javax.persistence.Embeddable;
  * @since 2020-04-26
  */
 @Embeddable
-public final class VatNumber {
+final class VatNumber {
 
     @Column(name = "vat_number")
     private String value;
@@ -21,7 +21,7 @@ public final class VatNumber {
     @JpaOnly
     private VatNumber() {}
 
-    public VatNumber(String value) {
+    VatNumber(String value) {
         PreconditionUtil.requireNonNull(value);
         validate(value);
         this.value = value;
@@ -31,7 +31,7 @@ public final class VatNumber {
         // validate vat number
     }
 
-    public String getValue() {
+    String getValue() {
         return value;
     }
 }

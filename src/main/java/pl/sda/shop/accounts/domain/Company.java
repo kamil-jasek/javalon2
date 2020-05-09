@@ -1,4 +1,4 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
@@ -14,7 +14,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue("company")
-public final class Company extends Customer {
+final class Company extends Customer {
 
     @Embedded
     private VatNumber vatNumber;

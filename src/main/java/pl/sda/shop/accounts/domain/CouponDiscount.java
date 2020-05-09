@@ -1,7 +1,5 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
-import org.springframework.core.annotation.Order;
-import pl.sda.shop.util.PreconditionUtil;
 import pl.sda.shop.util.annotation.JpaOnly;
 
 import javax.persistence.DiscriminatorValue;
@@ -19,7 +17,7 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  */
 @Entity
 @DiscriminatorValue("coupon")
-public final class CouponDiscount extends OrderDiscount {
+final class CouponDiscount extends OrderDiscount {
 
     private String coupon;
 

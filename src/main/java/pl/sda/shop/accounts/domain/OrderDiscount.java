@@ -1,4 +1,4 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "order_discount")
 @Inheritance
 @DiscriminatorColumn(name = "discount_type")
-public abstract class OrderDiscount {
+abstract class OrderDiscount {
 
     @Id
     private UUID id;
@@ -27,7 +27,7 @@ public abstract class OrderDiscount {
     @JpaOnly
     protected OrderDiscount() {}
 
-    public OrderDiscount(double discount) {
+    OrderDiscount(double discount) {
         validate(discount);
         this.id = UUID.randomUUID();
         this.discount = discount;
@@ -47,7 +47,7 @@ public abstract class OrderDiscount {
         return discount;
     }
 
-    public BigDecimal getDecimalDiscount() {
+    BigDecimal getDecimalDiscount() {
         return BigDecimal.valueOf(discount);
     }
 

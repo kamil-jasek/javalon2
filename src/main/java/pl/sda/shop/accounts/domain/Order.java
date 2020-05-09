@@ -1,6 +1,5 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
-import pl.sda.shop.util.PreconditionUtil;
 import pl.sda.shop.util.annotation.JpaOnly;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  */
 @Entity
 @Table(name = "customer_orders")
-public final class Order {
+final class Order {
 
     @Id
     private UUID id;
@@ -37,7 +36,7 @@ public final class Order {
     @JpaOnly
     private Order() {}
 
-    public Order(List<Item> items) {
+    Order(List<Item> items) {
         requireNonNull(items);
         this.id = UUID.randomUUID();
         this.items = items;
@@ -45,12 +44,12 @@ public final class Order {
         this.discount = new FixedDiscount(0d);
     }
 
-    public void applyDiscount(OrderDiscount discount) {
+    void applyDiscount(OrderDiscount discount) {
         requireNonNull(discount);
         this.discount = discount;
     }
 
-    public BigDecimal getTotalPrice() {
+    BigDecimal getTotalPrice() {
         BigDecimal result = BigDecimal.ZERO;
         for (Item item : items) {
             // result = result + (price * quantity)
@@ -61,19 +60,19 @@ public final class Order {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    public UUID getId() {
+    UUID getId() {
         return id;
     }
 
-    public List<Item> getItems() {
+    List<Item> getItems() {
         return items;
     }
 
-    public OrderDiscount getDiscount() {
+    OrderDiscount getDiscount() {
         return discount;
     }
 
-    public OrderStatus getStatus() {
+    OrderStatus getStatus() {
         return status;
     }
 

@@ -1,6 +1,5 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
-import pl.sda.shop.util.PreconditionUtil;
 import pl.sda.shop.util.annotation.JpaOnly;
 
 import javax.persistence.Entity;
@@ -19,7 +18,7 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  */
 @Entity
 @Table(name = "addresses")
-public final class Address {
+final class Address {
 
     @Id
     private UUID id;

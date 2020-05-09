@@ -1,4 +1,4 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
@@ -20,7 +20,7 @@ import static java.util.Objects.requireNonNull;
 @Table(name = "customers")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "customer_type")
-public abstract class Customer {
+abstract class Customer {
 
     @Id
     private UUID id;
