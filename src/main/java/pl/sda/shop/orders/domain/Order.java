@@ -1,6 +1,5 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.orders.domain;
 
-import pl.sda.shop.util.PreconditionUtil;
 import pl.sda.shop.util.annotation.JpaOnly;
 
 import javax.persistence.*;
@@ -20,10 +19,12 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  */
 @Entity
 @Table(name = "customer_orders")
-public final class Order {
+final class Order {
 
     @Id
     private UUID id;
+
+    private UUID accountId;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Item> items;
@@ -37,9 +38,10 @@ public final class Order {
     @JpaOnly
     private Order() {}
 
-    public Order(List<Item> items) {
+    public Order(UUID accountId, List<Item> items) {
         requireNonNull(items);
         this.id = UUID.randomUUID();
+        this.accountId = accountId;
         this.items = items;
         this.status = OrderStatus.IN_PROGRESS;
         this.discount = new FixedDiscount(0d);
@@ -65,6 +67,10 @@ public final class Order {
         return id;
     }
 
+    public UUID getAccountId() {
+        return accountId;
+    }
+
     public List<Item> getItems() {
         return items;
     }
@@ -82,11 +88,12 @@ public final class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id.equals(order.id);
+        return id.equals(order.id) &&
+                accountId.equals(order.accountId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, accountId);
     }
 }

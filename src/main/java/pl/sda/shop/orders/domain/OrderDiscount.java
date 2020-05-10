@@ -1,4 +1,4 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.orders.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "order_discount")
 @Inheritance
 @DiscriminatorColumn(name = "discount_type")
-public abstract class OrderDiscount {
+abstract class OrderDiscount {
 
     @Id
     private UUID id;

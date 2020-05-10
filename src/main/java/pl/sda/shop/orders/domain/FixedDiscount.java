@@ -1,8 +1,7 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.orders.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 

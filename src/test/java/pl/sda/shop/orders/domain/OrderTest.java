@@ -1,13 +1,17 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.orders.domain;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.sda.shop.orders.domain.CouponDiscount;
+import pl.sda.shop.orders.domain.FixedDiscount;
+import pl.sda.shop.orders.domain.Item;
+import pl.sda.shop.orders.domain.Order;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,7 +31,7 @@ final class OrderTest {
     @Test
     @Transactional
     void testOrderWithFixedDiscount() {
-        var order = new Order(asList(
+        var order = new Order(UUID.randomUUID(), asList(
                 new Item("item1", BigDecimal.valueOf(20), 1),
                 new Item("item2", BigDecimal.valueOf(15), 2)
         ));
@@ -49,7 +53,7 @@ final class OrderTest {
     @Test
     @Transactional
     void testOrderWithCouponDiscount() {
-        var order = new Order(asList(
+        var order = new Order(UUID.randomUUID(), asList(
                 new Item("test", new BigDecimal("10"), 1)
         ));
         order.applyDiscount(new CouponDiscount("ABC100", 0.2));

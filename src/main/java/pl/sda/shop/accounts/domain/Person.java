@@ -1,8 +1,7 @@
-package pl.sda.shop.domain;
+package pl.sda.shop.accounts.domain;
 
 import pl.sda.shop.util.annotation.JpaOnly;
 
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -16,7 +15,7 @@ import static pl.sda.shop.util.PreconditionUtil.requireNonNull;
  */
 @Entity
 @DiscriminatorValue("person")
-public final class Person extends Customer {
+final class Person extends Customer {
 
     private String firstName;
     private String lastName;
