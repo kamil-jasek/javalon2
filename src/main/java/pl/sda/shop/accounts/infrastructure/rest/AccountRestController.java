@@ -2,6 +2,7 @@ package pl.sda.shop.accounts.infrastructure.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.shop.accounts.domain.AccountFacade;
 import pl.sda.shop.accounts.domain.dto.CreatePersonAccountDto;
@@ -9,11 +10,10 @@ import pl.sda.shop.accounts.domain.dto.PersonQueryDto;
 import pl.sda.shop.accounts.infrastructure.rest.dto.AccountCreatedDto;
 import pl.sda.shop.accounts.infrastructure.rest.dto.CreateAccountDto;
 import pl.sda.shop.accounts.infrastructure.rest.dto.PersonDto;
+import pl.sda.shop.accounts.infrastructure.rest.security.IsAccountManager;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,7 +26,8 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequestMapping(value = "/api/v1/accounts")
 @RequiredArgsConstructor
-final class AccountRestController {
+//@IsAccountManager
+class AccountRestController {
 
     private final AccountFacade facade;
 
